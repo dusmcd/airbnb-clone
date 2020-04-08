@@ -6,3 +6,19 @@ body {
     height: auto;
 }
 
+/*
+    menu
+*/
+menu {
+    display: flex;
+    justify-content: flex-end;
+    background-color: rgb(240, 240, 240);
+    margin: 0 0 10px 0;
+    padding: 15px;
+}
+
+menu a {
+    padding: 10px;
+    
+}
+

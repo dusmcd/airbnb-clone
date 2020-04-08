@@ -8,6 +8,17 @@
 </head>
 
 <body>
+  <menu>
+    {{#if user}}
+    <p>Hello, {{user.dataValues.username}}</p>
+    <a href="#">Logout</a>
+    
+    {{else}}
+    <a href="/users/signup">Sign Up</a>
+    <a href="/users/login">Login</a>
+    
+    {{/if}}
+  </menu>
   {{{body}}}
   <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
     integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" crossorigin="anonymous"></script>
