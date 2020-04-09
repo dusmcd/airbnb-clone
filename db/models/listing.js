@@ -1,4 +1,4 @@
-const { db } = require('../db');
+const db = require('../db');
 const Sequelize = require('sequelize');
 
 const Listing = db.define('listing', {
@@ -8,6 +8,9 @@ const Listing = db.define('listing', {
         validate: {
             notEmpty: true
         }
+    },
+    description: {
+        type: Sequelize.TEXT
     },
     imageUrl: {
         type: Sequelize.STRING,

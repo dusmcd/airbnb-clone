@@ -39,7 +39,7 @@ User.beforeCreate(user => {
 
 User.prototype.validatePassword = function(givenPassword) {
     const encryptedPassword = encryptText(givenPassword, this.salt);
-    if (encryptedPassword === givenPassword) {
+    if (encryptedPassword === this.password) {
         return true;
     }
     return false;
