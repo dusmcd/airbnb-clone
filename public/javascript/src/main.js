@@ -1,9 +1,14 @@
 'use scrict';
 /*global $*/
 
+import Listing from './listing';
+
 const Main = (function() {
     function init() {
         $("#logout").on('click', logoutUser);
+        if ($.fn.cloudinary_fileupload !== undefined) {
+            $("input.cloudinary-fileupload[type=file]").cloudinary_fileupload();
+        }
     }
 
     function logoutUser() {
@@ -33,7 +38,6 @@ const Main = (function() {
 
 $(function() {
     Main.init();
-    if ($.fn.cloudinary_fileupload !== undefined) {
-        $("input.cloudinary-fileupload[type=file]").cloudinary_fileupload();
-    }
+    Listing.init();
+
 });
