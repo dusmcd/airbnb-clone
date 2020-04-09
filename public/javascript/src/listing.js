@@ -1,6 +1,12 @@
+'use strict';
+/*
+    global $ cloudinary
+*/
+
 const Listing = (function() {
     function init() {
         addFileUploadTag();
+        console.log('LISTING FILE EXECUTED!');
     }
 
     function addFileUploadTag() {
@@ -12,5 +18,7 @@ const Listing = (function() {
         init
     };
 })();
+
+
 
 export default Listing;
