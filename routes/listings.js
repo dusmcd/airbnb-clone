@@ -1,15 +1,16 @@
 const router = require('express').Router();
 const { Listing } = require('../db');
+const { isLoggedIn } = require('../helpers');
 
 router.get('/', (req, res, next) => {
     res.render('listings/index');
 });
 
-router.get('/new', (req, res, next) => {
+router.get('/new', isLoggedIn, (req, res, next) => {
     res.render('listings/new', { url: '/listings', button: 'Post' });
 });
 
-router.post('/', async(req, res, next) => {
+router.post('/', isLoggedIn, async(req, res, next) => {
     try {
         const newListing = await Listing.create({
             title: req.body.title,

@@ -11,11 +11,11 @@
   <menu>
     {{#if user}}
     <div class="left-menu">
-      <a href="/listings/new">Create Listing</a>
+      <li><a href="/listings/new">Create Listing</a></li>
     </div>
     <div class="right-menu">
-      <p>Hello, {{user.dataValues.username}}</p>
-      <a href="#">Logout</a>
+      <li><p>Hello, {{user.dataValues.username}}</p></li>
+      <li><a href="#">Logout</a></li>
     </div>
     
     {{else}}
