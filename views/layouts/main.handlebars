@@ -11,25 +11,33 @@
   <menu>
     {{#if user}}
     <div class="left-menu">
+      <li><a href="/">AirBnb Clone</a></li>
       <li><a href="/listings/new">Create Listing</a></li>
     </div>
     <div class="right-menu">
       <li><p>Hello, {{user.dataValues.username}}</p></li>
-      <li><a href="#">Logout</a></li>
+      <li><a href="#" id="logout">Logout</a></li>
     </div>
     
     {{else}}
     <div class="right-menu">
+      <a href="/">AirBnb Clone</a>
       <a href="/users/signup">Sign Up</a>
       <a href="/users/login">Login</a>
     </div>
     
     {{/if}}
   </menu>
+  <div class="ui inverted dimmer" id="main-loader">
+    <div class="ui loader"></div>
+  </div>
   {{{body}}}
-  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-    integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" crossorigin="anonymous"></script>
+  <script
+    src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+    crossorigin="anonymous"></script>
   <script src="/semantic/dist/semantic.min.js"></script>
+  <script src="/javascript/main.js"></script>
 </body>
 
 </html>

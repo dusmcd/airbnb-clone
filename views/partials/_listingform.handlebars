@@ -1,15 +1,16 @@
 <form class="ui form" action={{url}} method="POST">
     <div class="field">
         <label>Title</label>
-        <input type="text" name="title" placeholder="Title" />
+        <input type="text" name="title" placeholder="Title" value="{{listing.dataValues.title}}" />
     </div>
     <div class="field">
         <label>Description</label>
-        <textarea name="description"></textarea>
+        <textarea name="description">{{listing.dataValues.description}}</textarea>
     </div>
     <div class="field">
         <label>Price Per Day</label>
-        <input type="number" name="price" />
+        <input type="number" name="price" value={{listing.dataValues.price}} />
     </div>
     <button type="submit" class="ui button primary">{{button}}</button>
 </form>
+
