@@ -1,6 +1,8 @@
 const router = require('express').Router();
 const { Listing } = require('../db');
 const { isLoggedIn } = require('../helpers');
+const cloudinary = require('cloudinary');
+
 
 router.get('/', async(req, res, next) => {
     const listings = await Listing.findAll();
@@ -8,15 +10,21 @@ router.get('/', async(req, res, next) => {
 });
 
 router.get('/new', isLoggedIn, (req, res, next) => {
-    res.render('listings/new', { url: '/listings', button: 'Post' });
+    cloudinary.cloudinary_js_config();
+    const cloudinaryCors = `https://${req.headers.host}/cloudinary_cors.html`;
+    const fileUploaderTag = cloudinary.v2.uploader.image_upload_tag('image_id', { callback: cloudinaryCors });
+    res.render('listings/new', { url: '/listings', button: 'Post', fileUploaderTag: fileUploaderTag });
 });
 
 router.post('/', isLoggedIn, async(req, res, next) => {
     try {
+        const imageUrlPath = req.body.image_id.slice(0, req.body.image_id.indexOf('#'));
+        const imageUrl = `https://res.cloudinary.com/${process.env.CLOUDNAME}/${imageUrlPath}`;
         const newListing = await Listing.create({
             title: req.body.title,
             description: req.body.description,
             price: req.body.price,
+            imageUrl: imageUrl,
             userId: req.user.id
         });
         res.redirect(`/listings/${newListing.id}`);

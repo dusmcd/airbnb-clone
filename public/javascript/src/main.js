@@ -1,8 +1,7 @@
 'use scrict';
-/*global $*/
+/*global $ */
 
 import Listing from './listing';
-
 const Main = (function() {
     function init() {
         $("#logout").on('click', logoutUser);
@@ -39,5 +38,4 @@ const Main = (function() {
 $(function() {
     Main.init();
     Listing.init();
-
 });

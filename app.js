@@ -69,6 +69,8 @@ passport.use(new LocalStrategy({ usernameField: 'email' },
     }
   }));
 
+
+
 // make user available to all tempaltes
 app.use((req, res, next) => {
   app.locals.user = req.user;
