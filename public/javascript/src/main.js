@@ -1,13 +1,11 @@
 'use scrict';
-/*global $ */
+/*global $ cloudinary*/
 
 import Listing from './listing';
 const Main = (function() {
     function init() {
         $("#logout").on('click', logoutUser);
-        if ($.fn.cloudinary_fileupload !== undefined) {
-            $("input.cloudinary-fileupload[type=file]").cloudinary_fileupload();
-        }
+        cloudinary.setCloudName("drcrdobkq");
     }
 
     function logoutUser() {
@@ -28,6 +26,8 @@ const Main = (function() {
 
         });
     }
+    
+
 
 
     return {
