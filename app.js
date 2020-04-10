@@ -11,6 +11,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const session = require('express-session');
 const { db, User } = require('./db');
 const volleyball = require('volleyball');
+const methodOverride = require('method-override');
 
 // set view engine
 app.engine('handlebars', expressHbars());
@@ -20,6 +21,7 @@ app.set('view engine', 'handlebars');
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json({ extended: false }));
+app.use(methodOverride('_method'));
 
 //logging middleware
 app.use(volleyball);
@@ -66,6 +68,8 @@ passport.use(new LocalStrategy({ usernameField: 'email' },
       done(err);
     }
   }));
+
+
 
 // make user available to all tempaltes
 app.use((req, res, next) => {

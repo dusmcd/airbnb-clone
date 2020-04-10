@@ -1,1 +1,30 @@
-<h1>Listings Main Page</h1>
+<div class="ui container">
+    {{#if flashMessage }}
+        <div class="ui success message">
+            <i class="close icon"></i>
+            <div class="header">
+                {{flashMessage}}
+            </div>
+        </div>
+    {{/if}}
+    <div class="ui grid">
+        {{#each listings}}
+        <div class="five wide column">
+            <div class="ui card">
+                <div class="image">
+                    <img src="{{this.dataValues.imageUrl}}" />
+                </div>
+                <div class="content">
+                    <a class="header" href="/listings/{{this.dataValues.id}}">{{this.dataValues.title}}</a>
+                    <div class="description">
+                        <p>{{this.dataValues.description}}</p>
+                    </div>
+                </div>
+                <div class="extra content">
+                    ${{this.dataValues.price}}/day
+                </div>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</div>

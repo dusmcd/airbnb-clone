@@ -12,9 +12,9 @@ const Listing = db.define('listing', {
     description: {
         type: Sequelize.TEXT
     },
-    imageUrl: {
+    imagePublicId: {
         type: Sequelize.STRING,
-        defaultValue: 'https://images.pexels.com/photos/1660995/pexels-photo-1660995.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
+        defaultValue: 'lighted-beige-house-1396132_urqgou'
     },
     price: {
         type: Sequelize.DOUBLE,

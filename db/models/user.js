@@ -1,6 +1,6 @@
 const db = require('../db');
 const Sequelize = require('sequelize');
-const encryptText = require('../../helpers/encrypt');
+const { encryptText } = require('../../helpers');
 const crypto = require('crypto');
 
 const User = db.define('user', {

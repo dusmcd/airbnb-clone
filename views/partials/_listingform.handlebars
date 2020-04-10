@@ -1,15 +1,33 @@
-<form class="ui form" action={{url}} method="POST">
+<form class="ui form" action={{url}} method="POST" id="listing-form">
     <div class="field">
         <label>Title</label>
-        <input type="text" name="title" placeholder="Title" />
+        <input type="text" name="title" placeholder="Title" value="{{listing.dataValues.title}}" />
     </div>
     <div class="field">
         <label>Description</label>
-        <textarea name="description"></textarea>
+        <textarea name="description">{{listing.dataValues.description}}</textarea>
     </div>
     <div class="field">
         <label>Price Per Day</label>
-        <input type="number" name="price" />
+        <input type="number" name="price" value="{{listing.dataValues.price}}" />
     </div>
+    <div class="field">
+        <button type="button" class="ui button" id="show-upload-widget">{{imageButton}}</button>
+    </div>
+    <input type="hidden" id="publicId" name="publicId" />
     <button type="submit" class="ui button primary">{{button}}</button>
 </form>
+
+<div class="ui negative message" style="display: none;" id="upload-error">
+  <div class="header">
+    There was an error uploading your file
+  </div>
+</div>
+
+<div class="ui success message" style="display: none;" id="upload-success">
+  <div class="header">
+    File Uploaded Successfully
+  </div>
+</div>
+
+
