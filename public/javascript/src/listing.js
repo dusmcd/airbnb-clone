@@ -18,7 +18,14 @@ const Listing = (function() {
             (err, result) => {
                 if (err) {
                     console.error(err);
+                    $('#upload-error').show();
                 }
+                if (result && result.event === 'success') {
+                    $('#upload-success').append('<p>' + result.info.original_filename + '.' + result.info.format + '</p>')
+                    $('#upload-success').show();
+                    $('#show-upload-widget').hide();
+                }
+
             });
         $('#show-upload-widget').on('click', () => uploadWidget.open());
     }

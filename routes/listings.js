@@ -3,21 +3,16 @@ const { Listing } = require('../db');
 const { isLoggedIn } = require('../helpers');
 const cloudinary = require('cloudinary');
 
+function getPublicId(rawData) {
+    const indexPublicId = rawData.lastIndexOf('/') + 1;
+    const imagePublicId = rawData.slice(indexPublicId, rawData.indexOf('#'));
+    return imagePublicId;
+}
 
-router.get('/', async(req, res, next) => {
-    const listings = await Listing.findAll();
-    for (let i = 0; i < listings.length; i++) {
-        const imageUrl = cloudinary.url(listings[i].imagePublicId, {
-            transformation: {
-                dpr: 'auto',
-                responsive: true,
-                height: 550
-            }
-        });
-        listings[i].dataValues.imageUrl = imageUrl;
-    }
-    res.render('listings/index', { listings: listings });
-});
+
+/*
+    create routes
+*/
 
 router.get('/new', isLoggedIn, (req, res, next) => {
     res.render('listings/new', { url: '/listings', button: 'Post', imageButton: 'Upload Image' });
@@ -27,14 +22,13 @@ router.post('/', isLoggedIn, async(req, res, next) => {
     try {
         let newListingData;
         if (req.body.imageData) {
-            const indexPublicId = req.body.imageData.lastIndexOf('/') + 1;
-            const imagePublicId = req.body.imageData.slice(indexPublicId, req.body.imageData.indexOf('#'));
+
             newListingData = {
                 title: req.body.title,
                 description: req.body.description,
                 price: req.body.price,
                 userId: req.user.id,
-                imagePublicId: imagePublicId
+                imagePublicId: getPublicId(req.body.imageData)
             };
         }
         else {
@@ -53,26 +47,17 @@ router.post('/', isLoggedIn, async(req, res, next) => {
     }
 });
 
-router.get('/:id', async(req, res, next) => {
-    try {
-        const listing = await Listing.findByPk(req.params.id);
-        const imageUrl = cloudinary.url(listing.imagePublicId, {
-            transformation: {
-                dpr: 'auto',
-                responsive: true,
-                height: 500
-            }
-        });
-        res.render('listings/show', { listing: listing, imageUrl: imageUrl });
-    }
-    catch (err) {
-        next(err);
-    }
-});
 
-router.get('/edit/:id', async(req, res, next) => {
+/*
+    edit/update routes
+*/
+
+router.get('/edit/:id', isLoggedIn, async(req, res, next) => {
     try {
         const listing = await Listing.findByPk(req.params.id);
+        if (req.user.id !== listing.userId) {
+            return res.redirect('/');
+        }
         res.render('listings/edit', {
             listing: listing,
             button: 'Save Changes',
@@ -85,21 +70,75 @@ router.get('/edit/:id', async(req, res, next) => {
     }
 });
 
-router.put('/:id', async(req, res, next) => {
+router.put('/:id', isLoggedIn, async(req, res, next) => {
     try {
-        const imageUrlPath = req.body.imageData.slice(0, req.body.imageData.indexOf('#'));
-        const imageUrl = `https://res.cloudinary.com/drcrdobkq/${imageUrlPath}`;
-        await Listing.update({
-            title: req.body.title,
-            description: req.body.description,
-            price: req.body.price,
-            imageUrl: imageUrl
-        }, {
+        const currentListing = await Listing.findByPk(req.params.id);
+        if (req.user.id !== currentListing.userId) {
+            return res.redirect('/');
+        }
+        let updatedListing;
+        if (req.body.imageData) {
+            if (currentListing.imagePublicId !== 'lighted-beige-house-1396132_urqgou') {
+                // delete old image from cloudinary unless it is the default image provided
+                const publicId = currentListing.imagePublicId;
+                cloudinary.v2.uploader.destroy(publicId.slice(0, publicId.indexOf('.')));
+            }
+            updatedListing = {
+                title: req.body.title,
+                description: req.body.description,
+                price: req.body.price,
+                imagePublicId: getPublicId(req.body.imageData)
+            };
+        }
+        else {
+            updatedListing = {
+                title: req.body.title,
+                description: req.body.description,
+                price: req.body.price,
+            };
+        }
+        await Listing.update(updatedListing, {
             where: {
                 id: req.params.id
             }
         });
         res.redirect(`/listings/${req.params.id}`);
+    }
+    catch (err) {
+        next(err);
+    }
+});
+
+/*
+    show routes
+*/
+router.get('/', async(req, res, next) => {
+    const listings = await Listing.findAll();
+    for (let i = 0; i < listings.length; i++) {
+        const imageUrl = cloudinary.url(listings[i].imagePublicId, {
+            transformation: {
+                dpr: 'auto',
+                responsive: true,
+                height: 550
+            }
+        });
+        listings[i].dataValues.imageUrl = imageUrl;
+    }
+    res.render('listings/index', { listings: listings });
+});
+
+router.get('/:id', async(req, res, next) => {
+    try {
+        const listing = await Listing.findByPk(req.params.id);
+        let showEditButton = req.user && (req.user.id === listing.userId);
+        const imageUrl = cloudinary.url(listing.imagePublicId, {
+            transformation: {
+                dpr: 'auto',
+                responsive: true,
+                height: 500
+            }
+        });
+        res.render('listings/show', { listing, imageUrl, showEditButton });
     }
     catch (err) {
         next(err);

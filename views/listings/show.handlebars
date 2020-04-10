@@ -1,8 +1,12 @@
 
 <div class="ui container">
 
-    <h1>Title: {{listing.dataValues.title}}</h1>
-    <a href="/listings/edit/{{listing.dataValues.id}}"><i class="edit outline icon"></i></a>
+    <h1>
+        Title: {{listing.dataValues.title}}
+        {{#if showEditButton }}
+            <a href="/listings/edit/{{listing.dataValues.id}}"><i class="edit outline icon"></i></a>
+        {{/if}}
+    </h1>
     <img class="ui fluid image" src="{{imageUrl}}" />
     <h3>${{listing.dataValues.price}}/day</h3>
     <p>{{listing.dataValues.description}}</p>
