@@ -6,6 +6,9 @@ const Main = (function() {
     function init() {
         $("#logout").on('click', logoutUser);
         cloudinary.setCloudName("drcrdobkq");
+        $('.success .close').on('click', function() {
+            $(this).hide();
+        });
     }
 
     function logoutUser() {
@@ -26,7 +29,7 @@ const Main = (function() {
 
         });
     }
-    
+
 
 
 

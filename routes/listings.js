@@ -9,6 +9,13 @@ function getPublicId(rawData) {
     return imagePublicId;
 }
 
+function deleteCloudinaryAsset(publicId) {
+    if (publicId !== 'lighted-beige-house-1396132_urqgou') {
+        // delete old image from cloudinary unless it is the default image provided
+        cloudinary.v2.uploader.destroy(publicId.slice(0, publicId.indexOf('.')));
+    }
+}
+
 
 /*
     create routes
@@ -78,11 +85,7 @@ router.put('/:id', isLoggedIn, async(req, res, next) => {
         }
         let updatedListing;
         if (req.body.imageData) {
-            if (currentListing.imagePublicId !== 'lighted-beige-house-1396132_urqgou') {
-                // delete old image from cloudinary unless it is the default image provided
-                const publicId = currentListing.imagePublicId;
-                cloudinary.v2.uploader.destroy(publicId.slice(0, publicId.indexOf('.')));
-            }
+            deleteCloudinaryAsset(currentListing.imagePublicId);
             updatedListing = {
                 title: req.body.title,
                 description: req.body.description,
@@ -97,16 +100,27 @@ router.put('/:id', isLoggedIn, async(req, res, next) => {
                 price: req.body.price,
             };
         }
-        await Listing.update(updatedListing, {
-            where: {
-                id: req.params.id
-            }
-        });
+        await currentListing.update(updatedListing);
         res.redirect(`/listings/${req.params.id}`);
     }
     catch (err) {
         next(err);
     }
+});
+
+/*
+    delete route
+*/
+
+router.delete('/:id', isLoggedIn, async(req, res, next) => {
+    const listing = await Listing.findByPk(req.params.id);
+    if (req.user.id !== listing.userId) {
+        return res.redirect('/');
+    }
+    deleteCloudinaryAsset(listing.imagePublicId);
+    await listing.destroy();
+    res.redirect('/');
+
 });
 
 /*

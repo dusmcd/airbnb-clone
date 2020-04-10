@@ -11,5 +11,9 @@
     <h3>${{listing.dataValues.price}}/day</h3>
     <p>{{listing.dataValues.description}}</p>
     
-    
+    {{#if showEditButton }}
+        <form action="/listings/{{listing.dataValues.id}}?_method=DELETE" method="POST">
+            <button type="submit" class="ui orange button">Delete</button>
+        </form>
+    {{/if}}
 </div>

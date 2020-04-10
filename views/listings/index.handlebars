@@ -1,4 +1,12 @@
 <div class="ui container">
+    {{#if flashMessage }}
+        <div class="ui success message">
+            <i class="close icon"></i>
+            <div class="header">
+                {{flashMessage}}
+            </div>
+        </div>
+    {{/if}}
     <div class="ui grid">
         {{#each listings}}
         <div class="five wide column">
