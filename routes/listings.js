@@ -159,4 +159,12 @@ router.get('/:id', async(req, res, next) => {
     }
 });
 
+/*
+    reservation routes
+*/
+
+router.post('/:id/reserve', isLoggedIn, async(req, res, next) => {
+    res.send(req.body);
+});
+
 module.exports = router;

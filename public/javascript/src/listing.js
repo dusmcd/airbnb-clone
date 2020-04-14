@@ -5,7 +5,10 @@
 
 const Listing = (function() {
     function init() {
-        initializeUploadWidget();
+        if (window.location.href.includes('listings')) {
+            initializeUploadWidget();
+        }
+        initializeReservationBtns();
     }
 
     function initializeUploadWidget() {
@@ -28,6 +31,13 @@ const Listing = (function() {
 
             });
         $('#show-upload-widget').on('click', () => uploadWidget.open());
+    }
+
+    function initializeReservationBtns() {
+        $('#make-reservation').on('click', function() {
+            $('#reserve-form').show();
+            $(this).hide();
+        });
     }
 
 

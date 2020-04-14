@@ -16,4 +16,22 @@
             <button type="submit" class="ui orange button">Delete</button>
         </form>
     {{/if}}
+    
+    {{#if user }}
+    <form class="ui form" action="/listings/{{listing.dataValues.id}}/reserve" method="POST" id="reserve-form" style="display: none;">
+        <div class="two fields">
+            <div class="field">
+                <label>Check-in Date</label>
+                <input type="text" class="datepicker" name="startDate" />
+            </div>
+            <div class="field">
+                <label>Check-out Date</label>
+                <input type="text" class="datepicker" name="endDate" />
+            </div>
+        </div>
+        <button type="submit" class="ui green button">Reserve</button>
+    </form>
+    <button type="button" class="ui primary button" id="make-reservation">Make Reservation</button>
+    {{/if}}
 </div>
+
