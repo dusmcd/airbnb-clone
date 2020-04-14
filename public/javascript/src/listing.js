@@ -1,11 +1,13 @@
 'use strict';
 /*
-    global $ cloudinary
+    global $ cloudinary location
 */
 
 const Listing = (function() {
     function init() {
-        if (window.location.href.includes('listings')) {
+        const isListingForm = location.href.includes('listings') &&
+            (location.href.includes('new') || location.href.includes('edit'));
+        if (isListingForm) {
             initializeUploadWidget();
         }
         initializeReservationBtns();
