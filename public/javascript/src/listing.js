@@ -1,6 +1,6 @@
 'use strict';
 /*
-    global $ cloudinary location
+    global $ cloudinary location datepicker
 */
 
 const Listing = (function() {
@@ -11,6 +11,7 @@ const Listing = (function() {
             initializeUploadWidget();
         }
         initializeReservationBtns();
+        initializeDatepicker();
     }
 
     function initializeUploadWidget() {
@@ -26,7 +27,7 @@ const Listing = (function() {
                     $('#upload-error').show();
                 }
                 if (result && result.event === 'success') {
-                    $('#upload-success').append('<p>' + result.info.original_filename + '.' + result.info.format + '</p>')
+                    $('#upload-success').append('<p>' + result.info.original_filename + '.' + result.info.format + '</p>');
                     $('#upload-success').show();
                     $('#show-upload-widget').hide();
                 }
@@ -40,6 +41,22 @@ const Listing = (function() {
             $('#reserve-form').show();
             $(this).hide();
         });
+    }
+
+    function initializeDatepicker() {
+        const listingId = $('#listing-id').val();
+        $.ajax(`/listings/${listingId}/reservations`, {
+            method: 'GET',
+            success: function(datesReserved) {
+                // console.log(datesReserved);
+                datepicker('input[name=startDate]', { id: 1, minDate: new Date(Date.now() + 86400000) });
+                datepicker('input[name=endDate]', { id: 1 });
+            },
+            error: function(err) {
+                console.error(err);
+            }
+        });
+
     }
 
 

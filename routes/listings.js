@@ -1,7 +1,8 @@
 const router = require('express').Router();
-const { Listing } = require('../db');
+const { Listing, Reservation } = require('../db');
 const { isLoggedIn } = require('../helpers');
 const cloudinary = require('cloudinary');
+const Op = require('sequelize').Op;
 
 function getPublicId(rawData) {
     const indexPublicId = rawData.lastIndexOf('/') + 1;
@@ -163,8 +164,46 @@ router.get('/:id', async(req, res, next) => {
     reservation routes
 */
 
+router.get('/:id/reservations', async(req, res, next) => {
+    try {
+        const reservations = await Reservation.findAll({
+            where: {
+                listingId: req.params.id,
+                // startDate: {
+                //     [Op.gte]: Date.now()
+                // }
+            }
+        });
+        // const datesReserved = [];
+        // reservations.forEach(reservation => {
+        //     const begin = new Date(reservation.startDate);
+        //     const end = new Date(reservation.endDate);
+        //     for (let date = begin.valueOf(); date <= end.valueOf(); date += 86400000) {
+        //         datesReserved.push(new Date(date));
+        //     }
+        // });
+        // res.json(datesReserved);
+        res.json(reservations);
+    }
+    catch (err) {
+        res.json(err.message);
+    }
+});
+
 router.post('/:id/reserve', isLoggedIn, async(req, res, next) => {
-    res.send(req.body);
+    try {
+        await Reservation.create({
+            startDate: new Date(req.body.startDate),
+            endDate: new Date(req.body.endDate),
+            pricePaid: req.body.pricePaid,
+            listingId: req.params.id,
+            userId: req.user.id
+        });
+        res.redirect(`/listings/${req.params.id}/reservations`);
+    }
+    catch (err) {
+        next(err);
+    }
 });
 
 module.exports = router;

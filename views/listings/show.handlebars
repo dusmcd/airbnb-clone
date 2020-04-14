@@ -1,4 +1,4 @@
-
+<input type="hidden" id="listing-id" value="{{listing.dataValues.id}}" />
 <div class="ui container">
 
     <h1>
@@ -22,13 +22,14 @@
         <div class="two fields">
             <div class="field">
                 <label>Check-in Date</label>
-                <input type="text" class="datepicker" name="startDate" />
+                <input type="text" name="startDate" />
             </div>
             <div class="field">
                 <label>Check-out Date</label>
-                <input type="text" class="datepicker" name="endDate" />
+                <input type="text" name="endDate" />
             </div>
         </div>
+        <input type="hidden" value="{{listing.dataValues.price}}" name="pricePaid" />
         <button type="submit" class="ui green button">Reserve</button>
     </form>
     <button type="button" class="ui primary button" id="make-reservation">Make Reservation</button>
