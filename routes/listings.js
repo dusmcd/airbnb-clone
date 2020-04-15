@@ -1,7 +1,8 @@
 const router = require('express').Router();
-const { Listing } = require('../db');
+const { Listing, Reservation } = require('../db');
 const { isLoggedIn } = require('../helpers');
 const cloudinary = require('cloudinary');
+const Op = require('sequelize').Op;
 
 function getPublicId(rawData) {
     const indexPublicId = rawData.lastIndexOf('/') + 1;
@@ -153,6 +154,55 @@ router.get('/:id', async(req, res, next) => {
             }
         });
         res.render('listings/show', { listing, imageUrl, showEditButton });
+    }
+    catch (err) {
+        next(err);
+    }
+});
+
+/*
+    reservation routes
+*/
+
+router.get('/:id/reservations', async(req, res, next) => {
+    try {
+        const reservations = await Reservation.findAll({
+            where: {
+                listingId: req.params.id,
+                // startDate: {
+                //     [Op.gte]: Date.now()
+                // }
+            }
+        });
+        const datesReserved = [];
+        reservations.forEach(reservation => {
+            const begin = new Date(reservation.startDate);
+            const end = new Date(reservation.endDate);
+            for (let date = begin.valueOf(); date < end.valueOf(); date += 86400000) {
+                datesReserved.push(date);
+            }
+        });
+        res.json(datesReserved);
+    }
+    catch (err) {
+        res.json(err.message);
+    }
+});
+
+router.post('/:id/reserve', isLoggedIn, async(req, res, next) => {
+    try {
+        const startDate = new Date(req.body.startDate);
+        const endDate = new Date(req.body.endDate);
+        const numberOfDays = (endDate.valueOf() - startDate.valueOf()) / 1000 / 60 / 60 / 24;
+        const pricePaid = numberOfDays * req.body.pricePaid;
+        await Reservation.create({
+            startDate,
+            endDate,
+            pricePaid,
+            listingId: req.params.id,
+            userId: req.user.id
+        });
+        res.redirect(`/listings/${req.params.id}/reservations`);
     }
     catch (err) {
         next(err);

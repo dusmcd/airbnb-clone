@@ -1,14 +1,14 @@
-
+<input type="hidden" id="listing-id" value="{{listing.dataValues.id}}" />
 <div class="ui container">
 
     <h1>
-        Title: {{listing.dataValues.title}}
+        {{listing.dataValues.title}}
         {{#if showEditButton }}
             <a href="/listings/edit/{{listing.dataValues.id}}"><i class="edit outline icon"></i></a>
         {{/if}}
     </h1>
     <img class="ui fluid image" src="{{imageUrl}}" />
-    <h3>${{listing.dataValues.price}}/day</h3>
+    <h3>$<span id="price">{{listing.dataValues.price}}</span>/day</h3>
     <p>{{listing.dataValues.description}}</p>
     
     {{#if showEditButton }}
@@ -16,4 +16,31 @@
             <button type="submit" class="ui orange button">Delete</button>
         </form>
     {{/if}}
+    
+    {{#if user }}
+    <form class="ui form" action="/listings/{{listing.dataValues.id}}/reserve" method="POST" id="reserve-form" style="display: none;">
+        <div class="two fields">
+            <div class="field">
+                <label>Check-in Date</label>
+                <input type="text" name="startDate" />
+            </div>
+            <div class="field">
+                <label>Check-out Date</label>
+                <input type="text" name="endDate" />
+            </div>
+        </div>
+        <input type="hidden" value="{{listing.dataValues.price}}" name="pricePaid" />
+        <div class="res-details" style="display: none;">
+            <h3>Check-In Date: <span id="start-date"></span></h3>
+            <h3>Check-Out Date: <span id="end-date"></span></h3>
+            <h3>Total Days: <span id="total-days"></span></h3>
+            <h3>Total Amount: <span id="total-amount"></span></h3>
+            <button type="submit" class="ui green button" id="confirm-reservation">Confirm Reservation</button>
+            <button type="button" class="ui red button" id="cancel-reservation">Cancel</button>
+        </div>
+        <button type="button" class="ui primary button" id="continue-reservation">Continue</button>
+    </form>
+    <button type="button" class="ui primary button" id="make-reservation">Make Reservation</button>
+    {{/if}}
 </div>
+

@@ -2,6 +2,7 @@
 /*global $ cloudinary*/
 
 import Listing from './listing';
+
 const Main = (function() {
     function init() {
         $("#logout").on('click', logoutUser);
