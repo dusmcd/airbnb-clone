@@ -41,16 +41,43 @@ const Listing = (function() {
             $('#reserve-form').show();
             $(this).hide();
         });
+        $('#continue-reservation').on('click', function() {
+            $(this).hide();
+            $('.res-details').show();
+            $('.two').hide();
+            $('#start-date').text($('input[name=startDate]').val());
+            $('#end-date').text($('input[name=endDate]').val());
+        });
+        $('#cancel-reservation').on('click', function() {
+            $('.res-details').hide();
+            $('#continue-reservation').show();
+            $('#start-date').text('');
+            $('#end-date').text('');
+            $('.two').show();
+        });
     }
 
     function initializeDatepicker() {
         const listingId = $('#listing-id').val();
         $.ajax(`/listings/${listingId}/reservations`, {
             method: 'GET',
-            success: function(datesReserved) {
-                // console.log(datesReserved);
-                datepicker('input[name=startDate]', { id: 1, minDate: new Date(Date.now() + 86400000) });
-                datepicker('input[name=endDate]', { id: 1 });
+            success: function(data) {
+                const datesReserved = data.map(dateValue => {
+                    const localDate = new Date(dateValue);
+                    // server keeps time in UTC
+                    const { year, month, date } = {
+                        year: localDate.getUTCFullYear(),
+                        month: localDate.getUTCMonth(),
+                        date: localDate.getUTCDate()
+                    };
+                    return new Date(year, month, date);
+                });
+                datepicker('input[name=startDate]', {
+                    id: 1,
+                    minDate: new Date(Date.now() + 86400000),
+                    disabledDates: datesReserved
+                });
+                datepicker('input[name=endDate]', { id: 1, disabledDates: datesReserved });
             },
             error: function(err) {
                 console.error(err);

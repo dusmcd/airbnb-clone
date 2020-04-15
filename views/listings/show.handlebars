@@ -2,7 +2,7 @@
 <div class="ui container">
 
     <h1>
-        Title: {{listing.dataValues.title}}
+        {{listing.dataValues.title}}
         {{#if showEditButton }}
             <a href="/listings/edit/{{listing.dataValues.id}}"><i class="edit outline icon"></i></a>
         {{/if}}
@@ -30,7 +30,13 @@
             </div>
         </div>
         <input type="hidden" value="{{listing.dataValues.price}}" name="pricePaid" />
-        <button type="submit" class="ui green button">Reserve</button>
+        <div class="res-details" style="display: none;">
+            <h3>Check-In Date: <span id="start-date"></span></h3>
+            <h3>Check-Out Date: <span id="end-date"></span></h3>
+            <button type="submit" class="ui green button" id="confirm-reservation">Confirm Reservation</button>
+            <button type="button" class="ui red button" id="cancel-reservation">Cancel</button>
+        </div>
+        <button type="button" class="ui primary button" id="continue-reservation">Continue</button>
     </form>
     <button type="button" class="ui primary button" id="make-reservation">Make Reservation</button>
     {{/if}}

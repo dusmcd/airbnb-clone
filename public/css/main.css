@@ -36,3 +36,15 @@ menu a {
     padding: 10px;
 }
 
+/*
+    listings
+*/
+
+.res-btns {
+    display: flex;
+}
+
+#start-date, #end-date {
+    font-weight: normal;
+}
+

@@ -174,16 +174,15 @@ router.get('/:id/reservations', async(req, res, next) => {
                 // }
             }
         });
-        // const datesReserved = [];
-        // reservations.forEach(reservation => {
-        //     const begin = new Date(reservation.startDate);
-        //     const end = new Date(reservation.endDate);
-        //     for (let date = begin.valueOf(); date <= end.valueOf(); date += 86400000) {
-        //         datesReserved.push(new Date(date));
-        //     }
-        // });
-        // res.json(datesReserved);
-        res.json(reservations);
+        const datesReserved = [];
+        reservations.forEach(reservation => {
+            const begin = new Date(reservation.startDate);
+            const end = new Date(reservation.endDate);
+            for (let date = begin.valueOf(); date < end.valueOf(); date += 86400000) {
+                datesReserved.push(date);
+            }
+        });
+        res.json(datesReserved);
     }
     catch (err) {
         res.json(err.message);
