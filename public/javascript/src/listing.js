@@ -45,14 +45,22 @@ const Listing = (function() {
             $(this).hide();
             $('.res-details').show();
             $('.two').hide();
-            $('#start-date').text($('input[name=startDate]').val());
-            $('#end-date').text($('input[name=endDate]').val());
+
+            const startDateVal = $('input[name=startDate]').val();
+            const endDateVal = $('input[name=endDate]').val();
+            const numberOfDays = (new Date(endDateVal).valueOf() - new Date(startDateVal).valueOf()) / 1000 / 60 / 60 / 24;
+            const totalAmount = numberOfDays * Number($('#price').text());
+            $('#start-date').text(startDateVal);
+            $('#end-date').text(endDateVal);
+            $('#total-days').text(numberOfDays);
+            $('#total-amount').text('$' + totalAmount);
         });
         $('#cancel-reservation').on('click', function() {
             $('.res-details').hide();
             $('#continue-reservation').show();
             $('#start-date').text('');
             $('#end-date').text('');
+            $('#total-amount').text('');
             $('.two').show();
         });
     }

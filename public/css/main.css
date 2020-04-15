@@ -44,7 +44,7 @@ menu a {
     display: flex;
 }
 
-#start-date, #end-date {
+.res-details span{
     font-weight: normal;
 }
 

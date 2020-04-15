@@ -8,7 +8,7 @@
         {{/if}}
     </h1>
     <img class="ui fluid image" src="{{imageUrl}}" />
-    <h3>${{listing.dataValues.price}}/day</h3>
+    <h3>$<span id="price">{{listing.dataValues.price}}</span>/day</h3>
     <p>{{listing.dataValues.description}}</p>
     
     {{#if showEditButton }}
@@ -33,6 +33,8 @@
         <div class="res-details" style="display: none;">
             <h3>Check-In Date: <span id="start-date"></span></h3>
             <h3>Check-Out Date: <span id="end-date"></span></h3>
+            <h3>Total Days: <span id="total-days"></span></h3>
+            <h3>Total Amount: <span id="total-amount"></span></h3>
             <button type="submit" class="ui green button" id="confirm-reservation">Confirm Reservation</button>
             <button type="button" class="ui red button" id="cancel-reservation">Cancel</button>
         </div>

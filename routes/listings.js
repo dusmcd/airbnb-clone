@@ -191,10 +191,14 @@ router.get('/:id/reservations', async(req, res, next) => {
 
 router.post('/:id/reserve', isLoggedIn, async(req, res, next) => {
     try {
+        const startDate = new Date(req.body.startDate);
+        const endDate = new Date(req.body.endDate);
+        const numberOfDays = (endDate.valueOf() - startDate.valueOf()) / 1000 / 60 / 60 / 24;
+        const pricePaid = numberOfDays * req.body.pricePaid;
         await Reservation.create({
-            startDate: new Date(req.body.startDate),
-            endDate: new Date(req.body.endDate),
-            pricePaid: req.body.pricePaid,
+            startDate,
+            endDate,
+            pricePaid,
             listingId: req.params.id,
             userId: req.user.id
         });
