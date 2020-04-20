@@ -11,6 +11,39 @@
         <label>Price Per Day</label>
         <input type="number" name="price" value="{{listing.dataValues.price}}" />
     </div>
+    
+    <h2>Property Address Details</h2>
+    <div class="field">
+      <label>Address Line 1</label>
+      <input type="text" name="address1" value="{{listing.dataValues.address1}}" placeholder="Address 1" />
+    </div>
+    <div class="field">
+      <label>Address Line 2</label>
+      <input type="text" name="address2" value="{{listing.dataValues.address2}}" placeholder="Address 2" />
+    </div>
+    <div class="two fields">
+      <div class="field">
+        <label>City</label>
+        <input type="text" name="city" value="{{listing.dataValues.city}}" placeholder="City" />
+      </div>
+      <div class="field">
+        <label>State</label>
+        <div class="ui selection dropdown">
+          <input type="hidden" name="state" />
+          <i class="dropdown icon"></i>
+          <div class="default text">State</div>
+          <div class="menu">
+            {{#each states}}
+              <div class="item" data-value="{{this.dataValues.id}}">{{this.dataValues.name}}</div>
+            {{/each}}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="field">
+      <label>Zipcode</label>
+      <input type="text" name="zipcode" value="{{listing.dataValues.zipcode}}" placeholder="Zipcode" />
+    </div>
     <div class="field">
         <button type="button" class="ui button" id="show-upload-widget">{{imageButton}}</button>
     </div>

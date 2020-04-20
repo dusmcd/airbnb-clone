@@ -10,6 +10,8 @@ const Main = (function() {
         $('.success .close').on('click', function() {
             $(this).hide();
         });
+        // initialize dropdown
+        $('.ui.dropdown').dropdown();
     }
 
     function logoutUser() {

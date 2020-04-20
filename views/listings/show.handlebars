@@ -8,8 +8,12 @@
         {{/if}}
     </h1>
     <img class="ui fluid image" src="{{imageUrl}}" />
+    <p><em>Posted by {{listingOwner.dataValues.username}}</em></p>
     <h3>$<span id="price">{{listing.dataValues.price}}</span>/day</h3>
     <p>{{listing.dataValues.description}}</p>
+    
+    <h2>Location</h2>
+    <p>{{listing.dataValues.city}}, {{listing.state.dataValues.abbreviation}}</p>
     
     {{#if showEditButton }}
         <form action="/listings/{{listing.dataValues.id}}?_method=DELETE" method="POST">

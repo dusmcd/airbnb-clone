@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { Listing, Reservation } = require('../db');
+const { Listing, Reservation, User, State } = require('../db');
 const { isLoggedIn } = require('../helpers');
 const cloudinary = require('cloudinary');
 const Op = require('sequelize').Op;
@@ -22,13 +22,26 @@ function deleteCloudinaryAsset(publicId) {
     create routes
 */
 
-router.get('/new', isLoggedIn, (req, res, next) => {
-    res.render('listings/new', { url: '/listings', button: 'Post', imageButton: 'Upload Image' });
+router.get('/new', isLoggedIn, async(req, res, next) => {
+    try {
+        const states = await State.findAll();
+        res.render('listings/new', { url: '/listings', button: 'Post', imageButton: 'Upload Image', states });
+    }
+    catch (err) {
+        next(err);
+    }
 });
 
 router.post('/', isLoggedIn, async(req, res, next) => {
     try {
         let newListingData;
+        const addressData = {
+            address1: req.body.address1,
+            address2: req.body.address2,
+            city: req.body.city,
+            stateId: req.body.state,
+            zipcode: req.body.zipcode
+        };
         if (req.body.imageData) {
 
             newListingData = {
@@ -36,7 +49,8 @@ router.post('/', isLoggedIn, async(req, res, next) => {
                 description: req.body.description,
                 price: req.body.price,
                 userId: req.user.id,
-                imagePublicId: getPublicId(req.body.imageData)
+                imagePublicId: getPublicId(req.body.imageData),
+                ...addressData
             };
         }
         else {
@@ -45,8 +59,10 @@ router.post('/', isLoggedIn, async(req, res, next) => {
                 description: req.body.description,
                 price: req.body.price,
                 userId: req.user.id,
+                ...addressData
             };
         }
+
         const newListing = await Listing.create(newListingData);
         res.redirect(`/listings/${newListing.id}`);
     }
@@ -144,7 +160,9 @@ router.get('/', async(req, res, next) => {
 
 router.get('/:id', async(req, res, next) => {
     try {
-        const listing = await Listing.findByPk(req.params.id);
+        const listing = await Listing.findByPk(req.params.id, {
+            include: [User, State]
+        });
         let showEditButton = req.user && (req.user.id === listing.userId);
         const imageUrl = cloudinary.url(listing.imagePublicId, {
             transformation: {
@@ -153,7 +171,8 @@ router.get('/:id', async(req, res, next) => {
                 height: 500
             }
         });
-        res.render('listings/show', { listing, imageUrl, showEditButton });
+        const listingOwner = listing.user;
+        res.render('listings/show', { listing, imageUrl, showEditButton, listingOwner });
     }
     catch (err) {
         next(err);
