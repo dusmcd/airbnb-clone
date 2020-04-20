@@ -1,0 +1,20 @@
+<div class="ui container">
+    <h1>User Profile</h1>
+    <h2>{{user.dataValues.username}}</h2>
+    <h2>{{user.dataValues.email}}</h2>
+    
+    <h2>My Listings</h2>
+    <ul>
+        {{#each listings}}
+            <li>{{this.dataValues.title}} : {{this.dataValues.description}}</li>
+        {{/each}}
+    </ul>
+    
+    <h2>Reservations I Booked</h2>
+    <ul>
+        
+        {{#each reservations}}
+            <li>{{this.dataValues.startDate}} - {{this.dataValues.endDate}}</li>
+        {{/each}}
+    </ul>
+</div>

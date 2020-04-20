@@ -221,7 +221,7 @@ router.post('/:id/reserve', isLoggedIn, async(req, res, next) => {
             listingId: req.params.id,
             userId: req.user.id
         });
-        res.redirect(`/listings/${req.params.id}/reservations`);
+        res.redirect('/users/me');
     }
     catch (err) {
         next(err);
