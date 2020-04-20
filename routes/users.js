@@ -55,7 +55,8 @@ router.get('/me', isLoggedIn, async(req, res, next) => {
         const reservations = await Reservation.findAll({
             where: {
                 userId: req.user.id
-            }
+            },
+            include: [Listing]
         });
         res.render('users/profile', { listings, reservations });
     }

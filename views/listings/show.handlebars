@@ -45,6 +45,9 @@
         <button type="button" class="ui primary button" id="continue-reservation">Continue</button>
     </form>
     <button type="button" class="ui primary button" id="make-reservation">Make Reservation</button>
+    
+    {{else}}
+    <p><a href="/users/signup">Create an account</a> or <a href="/users/login">Login</a> to check availability and/or reserve this rental</p>
     {{/if}}
 </div>
 
